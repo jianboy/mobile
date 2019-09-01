@@ -1,0 +1,1 @@
+tns build android --key-store-path /Users/kite/.ssh/android_key_store/keystore --key-store-password 19890124 --key-store-alias key0 --key-store-alias-password 19890124 --copy-to /Users/kite/Desktop/拦访问卷-`date '+%Y%m%d-%H%M%S'.apk` --bundle
