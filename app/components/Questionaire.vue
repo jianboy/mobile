@@ -126,11 +126,7 @@
                     case 2: title = "问卷已结束";
                         break;
                 }
-                if (this.isRecording) {
-                    return `${title}(录音中...)`
-                } else {
-                    return title;
-                }
+                return title;
             },
             currentQuestion() {
                 return this.questionaire.questions[this.questionHEAD];
