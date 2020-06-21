@@ -22,8 +22,8 @@
             <!-- <Label :text="questionaire.info.hello" textWrap="true" row="2" style="margin-top:30"
                 verticalAlignment="top" /> -->
             <StackLayout row="3">
-                <Button text="开始问卷" @tap="onBegin()" :isEnabled="!isLoading"/>
-                <Label text="载入中..." v-if="isLoading" horizontalAlignment="center" ></Label>
+                <Button :text="startButtonContent" @tap="onBegin()" :isEnabled="!isLoading" />
+                <!-- <Label text="载入中..." v-if="isLoading" horizontalAlignment="center" ></Label> -->
                 <Button text="查看数据" @tap="onViewData" class="m-t-10"></Button>
             </StackLayout>
 
@@ -72,6 +72,11 @@
                 },
                 isLoading: false
             }
+        },
+        computed: {
+            startButtonContent() {
+                return this.isLoading ? '正在载入......' : '开始问卷'
+            },
         },
         mounted() {
             //先获取服务器端该问卷的status、version，如果本地存在status>=3(试访)且version相同的数据，则无需下载，否则下载
