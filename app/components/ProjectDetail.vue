@@ -22,8 +22,9 @@
             <!-- <Label :text="questionaire.info.hello" textWrap="true" row="2" style="margin-top:30"
                 verticalAlignment="top" /> -->
             <StackLayout row="3">
-                <Button text="开始问卷" @tap="onBegin()" class="m-b-20" />
-                <Button text="查看数据" @tap="onViewData" class="m-b-20"></Button>
+                <Button text="开始问卷" @tap="onBegin()" :isEnabled="!isLoading"/>
+                <Label text="载入中..." v-if="isLoading" horizontalAlignment="center" ></Label>
+                <Button text="查看数据" @tap="onViewData" class="m-t-10"></Button>
             </StackLayout>
 
         </GridLayout>
@@ -38,7 +39,13 @@
     import { Accuracy } from "tns-core-modules/ui/enums";
     import questionaireData from './QuestionaireData'
     import * as app from 'tns-core-modules/application';
-    import { LoadingIndicator } from "nativescript-loading-indicator";
+    // import { LoadingIndicator } from "@nstudio/nativescript-loading-indicator";
+    // import {
+    //     LoadingIndicator,
+    //     Mode,
+    //     OptionsCommon
+    // } from '@nstudio/nativescript-loading-indicator';
+
     import * as Toast from 'nativescript-toast';
     import GPS from '../gpsTrans.js'
 
@@ -61,8 +68,9 @@
                     },
                     questions: [],
                     hops: [],
-                    datasource: []
-                }
+                    datasource: [],
+                },
+                isLoading: false
             }
         },
         mounted() {
@@ -128,11 +136,23 @@
                     return;
                 }
 
-                var loader = new LoadingIndicator();
-                var options = {
-                    message: '载入中...'
-                }
-                loader.show(options);
+                // var loader = new LoadingIndicator();
+                // var options = {
+                //     message: '载入中...',
+                //     mode: Mode.AnnularDeterminate, // see options below
+                //     android: {
+                //         view: android.view.View, // Target view to show on top of (Defaults to entire window)
+                //         cancelable: true,
+                //         cancelListener: function (dialog) {
+                //             console.log('Loading cancelled');
+                //         }
+                //     },
+                //     ios: {
+                //         view: UIView // Target view to show on top of (Defaults to entire window)
+                //     }
+                // }
+                // loader.show(options);
+                this.isLoading = true;
                 // 获取位置
                 let $this = this;
                 geolocation.enableLocationRequest(false).then(() => {
@@ -147,13 +167,15 @@
                         lat = obj.lat;
                         long = obj.lon;
                         console.log('after exchange', `long = ${long}, lat = ${lat}`);
-                        loader.hide();
+                        // loader.hide();
+                        $this.isLoading = false;
                         $this.startAnswer(long, lat, isRecord);
 
                     }, function (error) {
                         console.log('getCurrentLocation failed', error);
                         Toast.makeText('无法获取到当前位置:' + error).show();
-                        loader.hide();
+                        $this.isLoading = true;
+                        // loader.hide();
                         $this.startAnswer(-1, -1, isRecord);
                     })
                 })
