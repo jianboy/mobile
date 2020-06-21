@@ -151,12 +151,16 @@ new Sqlite(dbname).then(database => {
 
     // register plugins
     // Vue.registerElement('CheckBox',() => CheckBox);
-    Vue.registerElement('CheckBox', () => require('nativescript-checkbox').CheckBox, {
-        model: {
-            prop: 'checked',
-            event: 'checkedChange'
+    Vue.registerElement(
+        'CheckBox',
+        () => require('@nstudio/nativescript-checkbox').CheckBox,
+        {
+            model: {
+                prop: 'checked',
+                event: 'checkedChange'
+            }
         }
-    });
+    );
 
     new Vue({
         render: h => h('frame', [h(App)])

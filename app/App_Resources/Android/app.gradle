@@ -3,7 +3,7 @@
 android {
   defaultConfig {  
     generatedDensities = []
-    applicationId = "com.laowei.questionaire"
+    applicationId = "com.scxbzw.questionaire"
   }
   aaptOptions {  
     additionalParameters "--no-version-vectors"  

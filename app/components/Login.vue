@@ -9,7 +9,17 @@
                 <TextField v-model="userName" hint="请输入用户名" autocapitalizationType="none" />
                 <TextField v-model="userPassword" hint="请输入密码" secure="true" autocapitalizationType="none" />
                 <Button class="btn btn-primary" text="登录" @tap="onTap" style="margin-top:100"></Button>
-                <Button class="btn btn-default" text="关闭1" @tap="$modal.close(false)" style="margin-top:10"></Button>
+                <Button class="btn btn-default" text="关闭" @tap="$modal.close(false)" style="margin-top:10"></Button>
+                <WrapLayout>
+                    <Label width="4%"></Label>
+                    <check-box :checked="isChecked" @checkedChange="isChecked = $event.value" text="我已阅读并同意" />
+                    <Button class="btn btn-outline btn-rounded-sm" text="《用户协议》" @tap="onUsageAgreement"
+                        style="margin-left: -10px; padding:0"></Button>
+                    <!-- <Label text="与"></Label> -->
+                    <Button class="btn btn-outline" text="《隐私协议》" @tap="onPrivacyAgreement"
+                        style="margin-left: -20px; padding:0"></Button>
+                </WrapLayout>
+
 
             </StackLayout>
         </Page>
@@ -20,12 +30,15 @@
     import axios from "axios";
     import * as applicationSettings from 'tns-core-modules/application-settings'
     import * as Toast from 'nativescript-toast';
+    import agreements from '../agreements.js'
+    import ShowAgreement from './ShowAgreement'
 
     export default {
         data() {
             return {
                 userName: "",
-                userPassword: ""
+                userPassword: "",
+                isChecked: false
             }
         },
         methods: {
@@ -41,6 +54,12 @@
                     Toast.makeText('密码不能为空').show();
                     return;
                 }
+
+                if (!this.isChecked) {
+                    Toast.makeText('请同意用户协议和隐私协议并继续').show();
+                    return;
+                }
+
                 axios.post(this.$baseUrl + '/authentication/login', {
                     userName: this.userName,
                     userPassword: this.userPassword,
@@ -56,6 +75,20 @@
 
                 });
             },
+            onUsageAgreement() {
+                alert({
+                    title: '用户协议内容',
+                    message: agreements.usage_agreement,
+                    okButtonText: '确定'
+                });
+            },
+            onPrivacyAgreement() {
+                alert({
+                    title: '隐私协议内容',
+                    message: agreements.privacy_agreement,
+                    okButtonText: '确定'
+                });
+            }
         },
     }
 </script>
