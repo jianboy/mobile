@@ -9,7 +9,8 @@
                 <TextField v-model="userName" hint="请输入用户名" autocapitalizationType="none" />
                 <TextField v-model="userPassword" hint="请输入密码" secure="true" autocapitalizationType="none" />
                 <Button class="btn btn-primary" text="登录" @tap="onTap" style="margin-top:100"></Button>
-                <Button class="btn btn-default" text="关闭" @tap="$modal.close(false)" style="margin-top:10"></Button>
+                <Button class="btn btn-default" text="关闭1" @tap="$modal.close(false)" style="margin-top:10"></Button>
+
             </StackLayout>
         </Page>
     </Frame>
