@@ -9,15 +9,15 @@
                 <TextField v-model="userName" hint="请输入用户名" autocapitalizationType="none" />
                 <TextField v-model="userPassword" hint="请输入密码" secure="true" autocapitalizationType="none" />
                 <Button class="btn btn-primary" text="登录" @tap="onTap" style="margin-top:100"></Button>
-                <Button class="btn btn-default" text="关闭" @tap="$modal.close(false)" style="margin-top:10"></Button>
-                <WrapLayout>
+                <Button class="btn btn-default" text="关闭" @tap="$modal.close(false)" style="margin-top:-2"></Button>
+                <WrapLayout style="margin-top:-2">
                     <Label width="4%"></Label>
                     <check-box :checked="isChecked" @checkedChange="isChecked = $event.value" text="我已阅读并同意" />
                     <Button class="btn btn-outline btn-rounded-sm" text="《用户协议》" @tap="onUsageAgreement"
-                        style="margin-left: -10px; padding:0"></Button>
+                        style="margin-left: -5px; margin-right: -5px; padding:0"></Button>
                     <!-- <Label text="与"></Label> -->
                     <Button class="btn btn-outline" text="《隐私协议》" @tap="onPrivacyAgreement"
-                        style="margin-left: -20px; padding:0"></Button>
+                        style="margin-left: -5px; padding:0"></Button>
                 </WrapLayout>
 
 

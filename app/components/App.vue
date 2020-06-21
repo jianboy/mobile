@@ -56,10 +56,22 @@
                         <Label class="body myLabel" v-for="role in user.roleNames" :key="role" :text="role"></Label>
                     </WrapLayout>
 
-                    <Button class="btn btn-warn" text="退出登录" @tap="onLogout" row="4" col="0" colSpan="2"
-                        v-if="user.userName && user.userName!='未登录'"></Button>
-                    <Button class="btn btn-primary" text="点击登录" @tap="loadUserInfo" row="4" col="0" colSpan="2"
-                        v-else></Button>
+                    <StackLayout v-if="user.userName && user.userName!='未登录'" row="4" col="0" colSpan="2">
+                        <GridLayout row="2" col="1" rows="*" columns="* auto *">
+                            <Button class="btn btn-outline btn-rounded-sm" text="《用户协议》" @tap="onUsageAgreement"
+                                col="0"></Button>
+                            <!-- <Label text="|" col="1" style="margin-top: -10;" /> -->
+                            <Button class="btn btn-outline" text="《隐私协议》" @tap="onPrivacyAgreement"
+                                col="2"></Button>
+
+                        </GridLayout>
+                        <Button class="btn" text="退出登录" @tap="onLogout"></Button>
+                    </StackLayout>
+                    <StackLayout v-else row="4" col="0" colSpan="2">
+                        <Button class="btn btn-primary" text="点击登录" @tap="loadUserInfo"></Button>
+                    </StackLayout>
+
+
                 </GridLayout>
             </TabViewItem>
         </TabView>
@@ -71,6 +83,7 @@
     import Login from './Login'
     import axios from "axios";
     import projectDetail from './ProjectDetail'
+    import agreements from '../agreements.js'
 
     export default {
         data() {
@@ -193,6 +206,20 @@
             onPullToRefreshInitiated({ object }) {
                 console.log('pulling');
                 this.queryProjectList(object);
+            },
+            onUsageAgreement() {
+                alert({
+                    title: '用户协议内容',
+                    message: agreements.usage_agreement,
+                    okButtonText: '确定'
+                });
+            },
+            onPrivacyAgreement() {
+                alert({
+                    title: '隐私协议内容',
+                    message: agreements.privacy_agreement,
+                    okButtonText: '确定'
+                });
             }
         }
     }
