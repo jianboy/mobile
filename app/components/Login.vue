@@ -31,7 +31,7 @@
     import * as applicationSettings from 'tns-core-modules/application-settings'
     import * as Toast from 'nativescript-toast';
     import agreements from '../agreements.js'
-    import ShowAgreement from './ShowAgreement'
+    // import ShowAgreement from './ShowAgreement'
 
     export default {
         data() {
