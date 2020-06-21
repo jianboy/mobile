@@ -160,12 +160,24 @@
                 this.isLoading = true;
                 // 获取位置
                 let $this = this;
-                geolocation.enableLocationRequest(false).then(() => {
+                // Toast.makeText('开始获取当前位置').show();
+
+                // Toast.makeText('geolocation.isEnabled() = ' + geolocation.isEnabled()).show();
+                console.log('geolocation.isEnabled() ', geolocation.isEnabled());
+
+                if (!geolocation.isEnabled()) {
+                    geolocation.enableLocationRequest();
                     console.log('enableLocationRequest success')
-                    geolocation.getCurrentLocation({ desiredAccuracy: Accuracy.any, maximumAge: 20000, timeout: 20000 }).then(function (location) {
+                    // Toast.makeText('enableLocationRequest success').show();
+                }
+
+                // geolocation.getCurrentLocation({ desiredAccuracy: Accuracy.any, maximumAge: 2000, timeout: 0 })
+                geolocation.getCurrentLocation({ desiredAccuracy: Accuracy.high, updateDistance: 0.1, maximumAge: 5000, timeout: 20000 })
+                    .then(function (location) {
                         let lat = location.latitude;
                         let long = location.longitude;
                         console.log('get location', `long = ${long}, lat = ${lat}`);
+                        // Toast.makeText('获取位置成功', `long = ${long}, lat = ${lat}`).show();
                         // 针对百度地图纠正坐标
                         debugger;
                         let obj = GPS.wgs_84_to_bd_09(lat, long);
@@ -178,12 +190,12 @@
 
                     }, function (error) {
                         console.log('getCurrentLocation failed', error);
-                        Toast.makeText('无法获取到当前位置:' + error).show();
+                        Toast.makeText('无法获取到当前位置:' + error.message).show();
                         $this.isLoading = true;
                         // loader.hide();
                         $this.startAnswer(-1, -1, isRecord);
                     })
-                })
+
 
             },
             onViewData() {
@@ -194,10 +206,10 @@
                 });
             },
             startAnswer(long, lat, isRecord) {
-                if (long < 0) {
+                // if (long < 0) {
                     // Toast.makeText('无法获取到当前位置，无法开始').show();
-                    return;
-                }
+                    // return;
+                // }
                 confirm({
                     title: "请确认",
                     message: "确定要开始问卷吗？",
