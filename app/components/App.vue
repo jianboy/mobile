@@ -61,8 +61,7 @@
                             <Button class="btn btn-outline btn-rounded-sm" text="《用户协议》" @tap="onUsageAgreement"
                                 col="0"></Button>
                             <!-- <Label text="|" col="1" style="margin-top: -10;" /> -->
-                            <Button class="btn btn-outline" text="《隐私协议》" @tap="onPrivacyAgreement"
-                                col="2"></Button>
+                            <Button class="btn btn-outline" text="《隐私协议》" @tap="onPrivacyAgreement" col="2"></Button>
 
                         </GridLayout>
                         <Button class="btn" text="退出登录" @tap="onLogout"></Button>
@@ -84,6 +83,7 @@
     import axios from "axios";
     import projectDetail from './ProjectDetail'
     import agreements from '../agreements.js'
+    import { setTimeout } from "tns-core-modules/timer";
 
     export default {
         data() {
@@ -101,7 +101,15 @@
             }
         },
         mounted() {
-            this.queryProjectList();
+            let displayed = applicationSettings.getString('userLicenseDisplayed');
+            console.log('userLicenseDisplayed', displayed)
+            if (!displayed) {
+                this.showLoginModalWithRetry(0)
+            } else {
+                this.queryProjectList();
+            }
+
+
         },
         computed: {
             showReload() {
@@ -109,6 +117,23 @@
             },
         },
         methods: {
+            showLoginModalWithRetry(retry) {
+                console.log('show login modal with retry:', retry)
+                this.$showModal(Login, {
+                    fullscreen: true
+                }).then(data => {
+                    console.log('data', data);
+                    if (data) {
+                        this.loadUserInfo();
+                        applicationSettings.setString('userLicenseDisplayed', 'true')
+                    }
+                }, error => {
+                    console.log('showModal error', error);
+                    if (retry < 5) {
+                        setTimeout(() => this.showLoginModalWithRetry(retry + 1), 500)
+                    }
+                })
+            },
             onItemTap({ item }) {
                 // console.log('tap index', event.index)
                 // console.log('tap item', event.item)
