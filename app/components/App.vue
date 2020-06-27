@@ -124,7 +124,7 @@
                 }).then(data => {
                     console.log('data', data);
                     if (data) {
-                        this.loadUserInfo();
+                        this.queryProjectList();
                         applicationSettings.setString('userLicenseDisplayed', 'true')
                     }
                 }, error => {

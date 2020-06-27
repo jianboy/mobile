@@ -68,6 +68,7 @@
                     debugger;
                     if (response.status != null) {
                         console.log('login success', response.data);
+                        Toast.makeText('登录成功').show();
                         applicationSettings.setString("userInfo", JSON.stringify(response.data))
                         this.$modal.close(true);
                     }
