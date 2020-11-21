@@ -31,7 +31,6 @@
     import * as applicationSettings from 'tns-core-modules/application-settings'
     import * as Toast from 'nativescript-toast';
     import agreements from '../agreements.js'
-    import { Toasty } from 'nativescript-toasty';
 
     export default {
         data() {
@@ -47,19 +46,16 @@
                 console.log('baseUrl', this.$baseUrl);
 
                 if (!this.userName) {
-                    // Toast.makeText('用户名不能为空').show();
-                    new Toasty({ text: '用户名不能为空'}).show();
+                    Toast.makeText('用户名不能为空').show();
                     return;
                 }
                 if (!this.userPassword) {
-                    // Toast.makeText('密码不能为空').show();
-                    new Toasty({ text: '密码不能为空'}).show();
+                    Toast.makeText('密码不能为空').show();
                     return;
                 }
 
                 if (!this.isChecked) {
-                    // Toast.makeText('请同意用户协议和隐私协议并继续').show();
-                    new Toasty({ text: '请同意用户协议和隐私协议并继续'}).show();
+                    Toast.makeText('请同意用户协议和隐私协议并继续').show();
                     return;
                 }
 
@@ -72,8 +68,7 @@
                     debugger;
                     if (response.status != null) {
                         console.log('login success', response.data);
-                        // Toast.makeText('登录成功').show();
-                        new Toasty({ text: '登录成功'}).show();
+                        Toast.makeText('登录成功').show();
                         applicationSettings.setString("userInfo", JSON.stringify(response.data))
                         this.$modal.close(true);
                     }
