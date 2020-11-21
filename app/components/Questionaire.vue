@@ -70,6 +70,7 @@
     import dateFormat from '../dateFormat.js'
     import indicatorBiz from '../indicatorBiz.js'
     import * as Toast from 'nativescript-toast';
+    import { Toasty } from 'nativescript-toasty';
 
     export default {
         props: {
@@ -260,7 +261,8 @@
                 console.warn('not record audio');
             }
             if (this.isRecord && !canRecord) {
-                Toast.makeText('该设备无法录音，无法开始').show();
+                // Toast.makeText('该设备无法录音，无法开始').show();
+                new Toasty({ text: '该设备无法录音，无法开始'}).show();
                 finishQuestionaire(5);
                 return;
             }
@@ -454,11 +456,13 @@
 
                     console.log('selections', selections);
                     if (this.currentQuestion.maxOptions && this.currentQuestion.maxOptions < selections.length) {
-                        Toast.makeText(`最多可选中${this.currentQuestion.maxOptions}项`).show();
+                        // Toast.makeText(`最多可选中${this.currentQuestion.maxOptions}项`).show();
+                        new Toasty({ text: `最多可选中${this.currentQuestion.maxOptions}项`}).show();
                         return;
                     }
                     if (this.currentQuestion.minOptions && this.currentQuestion.minOptions > selections.length) {
-                        Toast.makeText(`最少需选中${this.currentQuestion.minOptions}项`).show();
+                        // Toast.makeText(`最少需选中${this.currentQuestion.minOptions}项`).show();
+                        new Toasty({ text:`最少需选中${this.currentQuestion.minOptions}项`}).show();
                         return;
                     }
 
@@ -527,7 +531,8 @@
                 } else if (this.currentQuestion.type == 4) {
                     // 开放题
                     if (this.currentQuestion.required && !this.answerValue) {
-                        Toast.makeText('此项必填').show();
+                        // Toast.makeText('此项必填').show();
+                        new Toasty({ text:'此项必填'}).show();
                         return;
                     }
                     this.answers[questionId] = {

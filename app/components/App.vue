@@ -150,6 +150,7 @@
             },
             queryProjectList(listView) {
                 console.log('begin query project list.......')
+                debugger;
                 this.reloadText = '点击重试';
                 axios.get(this.$baseUrl + "/project?fromMobile=true").then(response => {
                     console.log('project list reponse', response)

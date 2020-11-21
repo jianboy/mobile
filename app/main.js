@@ -7,6 +7,7 @@ import * as applicationSettings from 'tns-core-modules/application-settings'
 import { knownFolders } from 'tns-core-modules/file-system';
 import * as Sqlite from 'nativescript-sqlite';
 import * as Toast from 'nativescript-toast';
+import { Toasty } from 'nativescript-toasty';
 // import { CheckBox} from 'nativescript-checkbox';
 
 let initDb = function (db) {
@@ -130,7 +131,8 @@ new Sqlite(dbname).then(database => {
         if (response.status == null && !response.data) {
             let connectionType = getConnectionType();
             console.log('网络请求失败，请检查网络设置。当前网络类型：' + connectionType);
-            Toast.makeText('网络请求失败，请检查网络设置。当前网络类型：' + connectionType).show();
+            // Toast.makeText('网络请求失败，请检查网络设置。当前网络类型：' + connectionType).show();
+            new Toasty({ text: '网络请求失败，请检查网络设置。当前网络类型：' + connectionType }).show();
         }
         return response;
     }, function (error) {
@@ -139,11 +141,13 @@ new Sqlite(dbname).then(database => {
             // var a = router
             console.log(error.response.config);
             console.log('api returns 401');
-            Toast.makeText('未登录或权限不足').show();
+            // Toast.makeText('未登录或权限不足').show();
+            new Toasty({ text: '未登录或权限不足' }).show();
         } else {
             console.error(error.response);
             let errorMsg = '出错了：' + error.response.data.msg;
-            Toast.makeText(errorMsg).show();
+            // Toast.makeText(errorMsg).show();
+            new Toasty({ text: errorMsg}).show();
         }
         return Promise.reject(error);
     });

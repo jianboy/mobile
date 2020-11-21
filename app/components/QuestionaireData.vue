@@ -48,6 +48,7 @@
     import axios from "axios";
     import * as applicationSettings from 'tns-core-modules/application-settings'
     import * as Toast from 'nativescript-toast';
+    import { Toasty } from 'nativescript-toasty';
 
     // 初始状态(0),
     // 成功(1),
@@ -135,7 +136,8 @@
                 }
                 console.log(`will upload ${selectedNames.length} audio`);
                 if (selectedNames.length == 0) {
-                    Toast.makeText('没有选中要上传的录音').show();
+                    // Toast.makeText('没有选中要上传的录音').show();
+                    new Toasty({ text: '没有选中要上传的录音'}).show();
                 } else {
                     confirm({
                         title: "请确认",
@@ -160,7 +162,8 @@
                 }
                 console.log(`will upload ${selectedNames.length} audio`);
                 if (selectedNames.length == 0) {
-                    Toast.makeText('没有选中要上传的数据').show();
+                    // Toast.makeText('没有选中要上传的数据').show();
+                    new Toasty({ text: '没有选中要上传的数据'}).show();
                 } else {
                     confirm({
                         title: "请确认",
@@ -194,7 +197,7 @@
                     url: url,
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/multipart/form-data"
+                        "Content-Type": "application/octet-stream"
                     },
                     description: "Uploading " + name
                 };
@@ -218,18 +221,21 @@
                     }
                 });
                 task.on("error", function (e) {
-                    Toast.makeText(sheetName + '上传失败').show();
+                    // Toast.makeText(sheetName + '上传失败').show();
+                    new Toasty({ text: '上传失败'}).show();
                 });
 
             },
             uploadAudioComplete() {
                 this.onExitEdit();
-                Toast.makeText(`${this.uploadAudioSuccessCount}个录音上传成功`).show();
+                // Toast.makeText(`${this.uploadAudioSuccessCount}个录音上传成功`).show();
+                new Toasty({ text: `${this.uploadAudioSuccessCount}个录音上传成功`}).show();
                 this.uploadAudioSuccessCount = 0;
             },
             uploadDataComplete() {
                 this.onExitEdit();
-                Toast.makeText(`${this.uploadDataSuccessCount}份数据上传成功`).show();
+                // Toast.makeText(`${this.uploadDataSuccessCount}份数据上传成功`).show();
+                new Toasty({ text: `${this.uploadDataSuccessCount}份数据上传成功`}).show();
                 this.uploadDataSuccessCount = 0;
             },
             uploadData(selectedNames, sheetName) {
