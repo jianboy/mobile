@@ -8,7 +8,7 @@
             </ActionBar>
             <GridLayout rows="* auto" v-if="stage == 0" class="margin">
                 <Label class="h2" :text="questionaire.info.hello" textWrap="true" verticalAlignment="top" />
-                <Button text="继续" @tap="stage = 1" row="1" />
+                <Button text="继续" @tap="startQuestionaire" row="1" />
             </GridLayout>
 
             <GridLayout rows="auto * auto" v-else-if="stage==1">
@@ -107,7 +107,7 @@
                 answerValue: '',
                 answerNote: {},
                 recorder: null,
-                isRecording: false,
+                recorderEnabled: false,
                 indicators: {},
                 historyStack: [],
                 nextBtnVisible: true,
@@ -253,34 +253,39 @@
                     recorderOpt.encoder = 3;
                 }
                 this.recorder.start(recorderOpt).then(() => {
-                    this.isRecording = true;
                     console.info('recording started success');
-                })
-            } else {
-                console.warn('not record audio');
-            }
-            if (this.isRecord && !canRecord) {
-                Toast.makeText('该设备无法录音，无法开始').show();
-                finishQuestionaire(5);
-                return;
-            }
+                    this.recorderEnabled = true;
 
-            // 获取最新的配额
-            let $this = this;
-            axios.get(`${this.$baseUrl}/questionaire/${this.questionaire.info.id}/indicator`).then(function (response) {
-                // $this.indicators = response.data
-                for (let i = 0; i < response.data.length; i++) {
-                    $this.indicators[response.data[i].id] = response.data[i];
-                }
-            });
+                }).catch(function (error) {
+                    console.log('开始录音失败', error);
+                    Toast.makeText("录音失败，请开启录音权限后重新开始问卷").show();
+                });
+            } 
 
-            // 将本次运行写入数据库
-            if (this.questionaire.info.status >= 3) {
-                this.insertAnswerSheet();
-            }
-            this.onQuestionLoaded();
+
         },
         methods: {
+            startQuestionaire() {
+                if(this.isRecord && !this.recorderEnabled){
+                    Toast.makeText("录音失败，请开启录音权限后重新开始问卷").show();
+                    return;
+                }
+                // 获取最新的配额
+                let $this = this;
+                axios.get(`${this.$baseUrl}/questionaire/${this.questionaire.info.id}/indicator`).then(function (response) {
+                    // $this.indicators = response.data
+                    for (let i = 0; i < response.data.length; i++) {
+                        $this.indicators[response.data[i].id] = response.data[i];
+                    }
+                });
+
+                // 将本次运行写入数据库
+                if (this.questionaire.info.status >= 3) {
+                    this.insertAnswerSheet();
+                }
+                this.onQuestionLoaded();
+                this.stage = 1;
+            },
             backEventHandler(args) {
                 console.log('activityBackPressedEvent......')
                 debugger;
@@ -575,7 +580,7 @@
                 if (this.isRecord) {
                     this.recorder.stop().catch(ex => {
                         console.log('recorder stop failed', ex);
-                        this.isRecording = false;
+                        // this.isRecording = false;
                     });
                 }
                 this.$modal.close();
