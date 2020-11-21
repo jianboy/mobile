@@ -141,61 +141,45 @@
                     return;
                 }
 
-                // var loader = new LoadingIndicator();
-                // var options = {
-                //     message: '载入中...',
-                //     mode: Mode.AnnularDeterminate, // see options below
-                //     android: {
-                //         view: android.view.View, // Target view to show on top of (Defaults to entire window)
-                //         cancelable: true,
-                //         cancelListener: function (dialog) {
-                //             console.log('Loading cancelled');
-                //         }
-                //     },
-                //     ios: {
-                //         view: UIView // Target view to show on top of (Defaults to entire window)
-                //     }
-                // }
-                // loader.show(options);
                 this.isLoading = true;
                 // 获取位置
                 let $this = this;
-                // Toast.makeText('开始获取当前位置').show();
 
                 // Toast.makeText('geolocation.isEnabled() = ' + geolocation.isEnabled()).show();
                 console.log('geolocation.isEnabled() ', geolocation.isEnabled());
 
-                if (!geolocation.isEnabled()) {
-                    geolocation.enableLocationRequest();
+                // if (!geolocation.isEnabled()) {
+                geolocation.enableLocationRequest().then(function () {
                     console.log('enableLocationRequest success')
                     // Toast.makeText('enableLocationRequest success').show();
-                }
+                    geolocation.getCurrentLocation({ desiredAccuracy: Accuracy.high, updateDistance: 0.1, maximumAge: 5000, timeout: 20000 })
+                        .then(function (location) {
+                            let lat = location.latitude;
+                            let long = location.longitude;
+                            console.log('get location', `long = ${long}, lat = ${lat}`);
+                            // Toast.makeText('获取位置成功', `long = ${long}, lat = ${lat}`).show();
+                            // 针对百度地图纠正坐标
+                            debugger;
+                            let obj = GPS.wgs_84_to_bd_09(lat, long);
+                            lat = obj.lat;
+                            long = obj.lon;
+                            console.log('after exchange', `long = ${long}, lat = ${lat}`);
+                            // loader.hide();
+                            $this.isLoading = false;
+                            $this.startAnswer(long, lat, isRecord);
 
-                // geolocation.getCurrentLocation({ desiredAccuracy: Accuracy.any, maximumAge: 2000, timeout: 0 })
-                geolocation.getCurrentLocation({ desiredAccuracy: Accuracy.high, updateDistance: 0.1, maximumAge: 5000, timeout: 20000 })
-                    .then(function (location) {
-                        let lat = location.latitude;
-                        let long = location.longitude;
-                        console.log('get location', `long = ${long}, lat = ${lat}`);
-                        // Toast.makeText('获取位置成功', `long = ${long}, lat = ${lat}`).show();
-                        // 针对百度地图纠正坐标
-                        debugger;
-                        let obj = GPS.wgs_84_to_bd_09(lat, long);
-                        lat = obj.lat;
-                        long = obj.lon;
-                        console.log('after exchange', `long = ${long}, lat = ${lat}`);
-                        // loader.hide();
-                        $this.isLoading = false;
-                        $this.startAnswer(long, lat, isRecord);
+                        }, function (error) {
+                            console.log('getCurrentLocation failed', error);
+                            Toast.makeText('无法获取到当前位置，请开启对应的权限').show();
+                            $this.isLoading = false;
+                            // loader.hide();
+                            // $this.startAnswer(-1, -1, isRecord);
 
-                    }, function (error) {
-                        console.log('getCurrentLocation failed', error);
-                        Toast.makeText('无法获取到当前位置:' + error.message).show();
-                        $this.isLoading = true;
-                        // loader.hide();
-                        $this.startAnswer(-1, -1, isRecord);
-                    })
-
+                        })
+                }).catch(function () {
+                    $this.isLoading = false;
+                    Toast.makeText('请开启位置权限后继续').show();
+                });
 
             },
             onViewData() {
@@ -207,8 +191,8 @@
             },
             startAnswer(long, lat, isRecord) {
                 // if (long < 0) {
-                    // Toast.makeText('无法获取到当前位置，无法开始').show();
-                    // return;
+                // Toast.makeText('无法获取到当前位置，无法开始').show();
+                // return;
                 // }
                 confirm({
                     title: "请确认",
