@@ -45,7 +45,7 @@
                 </GridLayout>
             </TabViewItem>
             <TabViewItem title="我的">
-                <GridLayout style="padding:20" rows="auto auto auto * auto" columns="auto *">
+                <GridLayout style="padding:20" rows="auto auto auto auto * auto" columns="auto *">
                     <Label class="h2" :text="user.nickName" colSpan="2" row="0" col="0"></Label>
 
                     <Label class="body myLabel" text="用户名" row="1" col="0"></Label>
@@ -56,7 +56,10 @@
                         <Label class="body myLabel" v-for="role in user.roleNames" :key="role" :text="role"></Label>
                     </WrapLayout>
 
-                    <StackLayout v-if="user.userName && user.userName!='未登录'" row="4" col="0" colSpan="2">
+                    <Label class="body myLabel" text="客户端版本" row="3" col="0"></Label>
+                    <Label class="body myLabel" text="v1. 1. 20201122" row="3" col="1"></Label>
+
+                    <StackLayout v-if="user.userName && user.userName!='未登录'" row="5" col="0" colSpan="2">
                         <GridLayout row="2" col="1" rows="*" columns="* auto *">
                             <Button class="btn btn-outline btn-rounded-sm" text="《用户协议》" @tap="onUsageAgreement"
                                 col="0"></Button>
