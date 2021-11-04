@@ -35,6 +35,8 @@ RUN yes | sdkmanager --licenses
 
 RUN yes | sdkmanager --update --channel=3
 
+RUN sdkmanager "platform-tools" 'build-tools;28.0.3' 'platforms;android-28'
+
 RUN npm install -g nativescript@6.5.1
 
 #RUN npm install
