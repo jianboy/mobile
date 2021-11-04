@@ -22,10 +22,11 @@ USER gitpod
 ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
 
 RUN bash -c "source ~/.sdkman/bin/sdkman-init.sh && \
-                sdk install java 8.0.232-open"
+                sdk install java 8.312.07.1-amzn"
+ENV JAVA_HOME /home/gitpod/.sdkman/candidates/java/8.312.07.1-amzn
 
 RUN yes | sdkmanager --licenses
 
 RUN yes | sdkmanager --update --channel=3
 RUN npm install -g nativescript
-RUN npm install
+# RUN npm install
