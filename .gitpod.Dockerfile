@@ -37,4 +37,4 @@ RUN yes | sdkmanager --update --channel=3
 
 RUN npm install -g nativescript@6.5.1
 
-RUN npm install
+#RUN npm install
