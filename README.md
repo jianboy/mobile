@@ -16,4 +16,7 @@ tns debug <platform> --bundle
 
 # Build, watch for changes and run the application
 tns run <platform> --bundle
+
+
+yarn add node-sass@4.9.2 sass-loader@7.1.0 -D
 ```
