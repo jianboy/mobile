@@ -27,5 +27,5 @@ RUN bash -c "source ~/.sdkman/bin/sdkman-init.sh && \
 RUN yes | sdkmanager --licenses
 
 RUN yes | sdkmanager --update --channel=3
-
+RUN npm install -g nativescript
 RUN npm install
