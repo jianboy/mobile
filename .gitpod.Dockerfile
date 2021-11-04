@@ -5,7 +5,7 @@ USER gitpod
 ENV ANDROID_HOME /opt/android-sdk-linux
 
 # Install Node and Yarn
-ENV NODE_VERSION=12.19
+ENV NODE_VERSION=10.14
 RUN bash -c ". .nvm/nvm.sh     && nvm install ${NODE_VERSION}     && nvm use ${NODE_VERSION}     && nvm alias default ${NODE_VERSION}"
 
 RUN echo "nvm use default &>/dev/null" >> ~/.bashrc.d/51-nvm-fix
