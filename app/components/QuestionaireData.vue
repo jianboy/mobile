@@ -1,3 +1,4 @@
+<!-- 数据管理页面 -->
 <template>
     <Page>
         <ActionBar :title="pageTitle" class="action-bar">
@@ -100,8 +101,10 @@
                 this.updateStatus();
             },
             updateStatus() {
+                // bugs selectedCount int 选中数量
                 this.selectedCount = this.$refs.listView.getSelectedItems().length;
             },
+            //完成按钮事件
             onEnterEdit() {
                 this.editMode = true;
                 this.$refs.listView.listView._nativeView.selectionBehavior = 'Press'
