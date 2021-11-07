@@ -14,7 +14,10 @@
     }
   },
   "dependencies": {
+    "@nativescript/core": "^8.1.5",
     "@nstudio/nativescript-checkbox": "^1.0.0",
+    "@triniwiz/nativescript-socketio": "^5.0.1",
+    "@triniwiz/nativescript-toasty": "*",
     "@vue/devtools": "^5.1.1",
     "axios": "^0.19.0",
     "nativescript-audio": "^5.0.1",
