@@ -1,32 +1,52 @@
 FROM gitpod/workspace-full-vnc
-                    
-USER gitpod
+  
+SHELL ["/bin/bash", "-c"]
 
-ENV ANDROID_HOME /opt/android-sdk-linux
+ENV ANDROID_HOME=/home/gitpod/androidsdk \
+    FLUTTER_VERSION=2.2.3-stable
 
+# Install Open JDK
 USER root
+RUN apt update \
+    && apt install openjdk-8-jdk -y \
+    && update-java-alternatives --set java-1.8.0-openjdk-amd64
 
-RUN apt update -qq && apt install zip unzip
-
-RUN cd /opt && \
-    wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip && \
-    unzip -q *.zip -d ${ANDROID_HOME} && \
-    rm *.zip
-
-RUN chmod -R 777 ${ANDROID_HOME}
-
-RUN apt clean -qq
-
+# Install SDK Manager
 USER gitpod
+RUN  wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip \
+    && mkdir -p $ANDROID_HOME/cmdline-tools/latest \
+    && unzip commandlinetools-linux-*.zip -d $ANDROID_HOME \
+    && rm -f commandlinetools-linux-*.zip \
+    && mv $ANDROID_HOME/cmdline-tools/bin $ANDROID_HOME/cmdline-tools/latest \
+    && mv $ANDROID_HOME/cmdline-tools/lib $ANDROID_HOME/cmdline-tools/latest
 
-ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
+RUN echo "export ANDROID_HOME=$ANDROID_HOME" >> /home/gitpod/.bashrc \
+    && echo 'export PATH=$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/cmdline-tools/bin:$ANDROID_HOME/platform-tools:$PATH' >> /home/gitpod/.bashrc
 
-RUN bash -c "source ~/.sdkman/bin/sdkman-init.sh && \
-                sdk install java 8.312.07.1-amzn"
-ENV JAVA_HOME /home/gitpod/.sdkman/candidates/java/8.312.07.1-amzn
+# Install Android Image version 30
+USER gitpod
+RUN yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-30" "emulator"
+RUN yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "system-images;android-30;google_apis;x86_64"
+RUN echo no | $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd -n avd28 -k "system-images;android-30;google_apis;x86_64"
 
-RUN yes | sdkmanager --licenses
-
-RUN yes | sdkmanager --update --channel=3
 RUN npm install -g nativescript
-# RUN npm install
+
+# Install Google Chrome
+USER root
+RUN apt-get update \
+  && apt-get install -y apt-transport-https \
+  && curl -sSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+  && echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
+  && apt-get update \
+  && sudo apt-get install -y google-chrome-stable
+
+# misc deps
+RUN apt-get install -y \
+  libasound2-dev \
+  libgtk-3-dev \
+  libnss3-dev \
+  fonts-noto \
+  fonts-noto-cjk
+
+# For Qt WebEngine on docker
+ENV QTWEBENGINE_DISABLE_SANDBOX 1
