@@ -1,2 +1,13 @@
 image:
   file: .gitpod.Dockerfile
+  
+tasks:
+  - init: |
+      npm install
+
+ports:
+  - port: 5900
+    onOpen: ignore
+    # vnc
+  - port: 6080
+    onOpen: open-preview
