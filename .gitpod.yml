@@ -3,6 +3,7 @@ image:
   
 tasks:
   - init: |
+      npm install -g nativescript@6.5.1
       npm install
 ports:
   - port: 5900
