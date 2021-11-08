@@ -1,5 +1,6 @@
 FROM gitpod/workspace-full-vnc
-                    
+SHELL ["/bin/bash", "-c"]
+    
 USER gitpod
 
 ENV ANDROID_HOME /opt/android-sdk-linux
@@ -36,3 +37,24 @@ RUN yes | sdkmanager --licenses
 RUN yes | sdkmanager --update --channel=3
 
 RUN sdkmanager "platform-tools" 'build-tools;25.0.2' "platforms;android-25"
+
+
+# Install Google Chrome
+USER root
+RUN apt-get update \
+    && apt-get install -y apt-transport-https \
+    && curl -sSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
+    && apt-get update \
+    && sudo apt-get install -y google-chrome-stable
+
+# misc deps
+RUN apt-get install -y \
+    libasound2-dev \
+    libgtk-3-dev \
+    libnss3-dev \
+    fonts-noto \
+    fonts-noto-cjk
+
+# For Qt WebEngine on docker
+ENV QTWEBENGINE_DISABLE_SANDBOX 1
