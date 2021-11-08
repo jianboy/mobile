@@ -19,7 +19,7 @@
     "axios": "^0.19.0",
     "nativescript-audio": "^5.0.1",
     "nativescript-background-http": "^3.3.1",
-    "nativescript-geolocation": "file:./nativescript-geolocation/src",
+    "nativescript-geolocation": "file:../nativescript-geolocation/src",
     "nativescript-socketio": "^3.3.1",
     "nativescript-sqlite": "^2.3.3",
     "nativescript-theme-core": "^1.0.4",
