@@ -27,6 +27,8 @@ nativescript
 npm install -g nativescript@6.5.1
 npm uninstall -g nativescript
 
+sdkmanager "platform-tools" 'build-tools;28.0.3' "platforms;android-28"
+
 ```
 
 Error executing Static Binding Generator: File already exists. This may lead to undesired behavior. Please change the name of one of the extended classes. File:/workspace/mobile/platforms/android/app/src/main/java/com/tns/FragmentClass.java Class: com.tns.FragmentClass
