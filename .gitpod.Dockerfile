@@ -39,22 +39,22 @@ RUN yes | sdkmanager --update --channel=3
 RUN sdkmanager "platform-tools" 'build-tools;28.0.3' "platforms;android-28"
 
 
-# Install Google Chrome
-USER root
-RUN apt-get update \
-    && apt-get install -y apt-transport-https \
-    && curl -sSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
-    && apt-get update \
-    && sudo apt-get install -y google-chrome-stable
+# # Install Google Chrome
+# USER root
+# RUN apt-get update \
+#     && apt-get install -y apt-transport-https \
+#     && curl -sSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+#     && echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
+#     && apt-get update \
+#     && sudo apt-get install -y google-chrome-stable
 
-# misc deps
-RUN apt-get install -y \
-    libasound2-dev \
-    libgtk-3-dev \
-    libnss3-dev \
-    fonts-noto \
-    fonts-noto-cjk
+# # misc deps
+# RUN apt-get install -y \
+#     libasound2-dev \
+#     libgtk-3-dev \
+#     libnss3-dev \
+#     fonts-noto \
+#     fonts-noto-cjk
 
-# For Qt WebEngine on docker
-ENV QTWEBENGINE_DISABLE_SANDBOX 1
+# # For Qt WebEngine on docker
+# ENV QTWEBENGINE_DISABLE_SANDBOX 1
